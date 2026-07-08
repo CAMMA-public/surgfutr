@@ -1,0 +1,69 @@
+_base_ = [
+    '../../../_base_/models/vits_ct50_cystic_triplets_256d.py',
+     '../../../_base_/schedules/schedule_coslr_adamw_1x_rsdphtr_cased.py']
+
+load_from = None
+
+model = dict(
+    type='CentroidTSDownstream',
+    backbone_ckpt='weights/dino_cholec80_r50_pretrained.torch',
+    backbone_type='ResNet50_SSL',
+    backbone=dict(
+        _delete_=True,
+        type='ResNet50_SSL',
+        depth=50,
+        num_stages=4,
+        out_indices=(0, 1, 2, 3),
+        frozen_stages=1,
+        norm_cfg=dict(type='BN', requires_grad=True),
+        norm_eval=True,
+        style='pytorch'),
+    use_centroid_transition=False,
+    clustering=None,
+    centroid_transition=None,
+    graph=None,
+    state_change_decoder=None,
+    imaginator=None,
+    aux_head=None,
+    cls_head=dict(
+        _delete_=True,
+        type='TimeConditionedAnticipationHead',
+        input_dim=2048,
+        clip_len=1,
+        num_classes=7,
+        num_centroids=25,
+        feat_type='backbone',
+        feat_agg='pool'))
+
+task = 'hct-triplets'
+
+train_dataloader = dict(
+    batch_size=32,
+    dataset=dict(
+        task=task,
+        disable_bg=True))
+
+val_dataloader = dict(
+    batch_size=16,
+    dataset=dict(
+        task=task,
+        disable_bg=True))
+
+# train_dataloader = dict(
+#     batch_size=4,
+#     dataset=dict(
+#         task=task,
+#         indices=100))
+
+# val_dataloader = dict(
+#     batch_size=4,
+#     dataset=dict(
+#         task=task))
+
+test_dataloader = dict(
+    dataset=dict(
+        task=task,
+        disable_bg=True))
+
+val_evaluator = dict(type='IAE_Metric', task=task, num_classes=7)
+test_evaluator = val_evaluator

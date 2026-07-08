@@ -1,0 +1,68 @@
+_base_ = [
+    '../../../_base_/mbp_models/mbp_vits_anticipation_bern.py',
+     '../../../_base_/schedules/schedule_coslr_adamw_1x_rsdphtr.py']
+
+load_from = None
+clip_len = 8
+model = dict(
+    backbone_ckpt='weights/moco_cholec80_r50_pretrained.torch',
+    backbone_type='ResNet50_SSL',
+    backbone=dict(
+        _delete_=True,
+        type='ResNet50_SSL',
+        depth=50,
+        num_stages=4,
+        out_indices=(0, 1, 2, 3),
+        frozen_stages=1,
+        norm_cfg=dict(type='BN', requires_grad=True),
+        norm_eval=True,
+        style='pytorch'),
+    clustering=None,
+    graph=None,
+    state_change_decoder=None,
+    cls_head=dict(
+        feat_type='backbone',
+        feat_agg='pool',
+        input_dim=2048,
+        clip_len=1,
+        num_classes=1)
+)
+
+task = 'rsd'
+train_dataloader = dict(
+    batch_size=32,
+    dataset=dict(
+        task=task,
+        clip_len=clip_len))
+
+val_dataloader = dict(
+    batch_size=32,
+    dataset=dict(
+        task=task,
+        clip_len=clip_len))
+
+test_dataloader = dict(
+    batch_size=32,
+    dataset=dict(
+        task=task,
+        clip_len=clip_len))
+
+# train_dataloader = dict(
+#     batch_size=4,
+#     dataset=dict(
+#         indices=10,
+#         clip_len=clip_len,
+#         task=task))
+
+# val_dataloader = dict(
+#     batch_size=4,
+#     dataset=dict(
+#         indices=10,
+#         clip_len=clip_len,
+#         task=task))
+
+
+val_evaluator = dict(type='RSDPhaseTransitionMetric', 
+                     task=task,
+                     event_time_markers=[21, 42])
+test_evaluator = val_evaluator
