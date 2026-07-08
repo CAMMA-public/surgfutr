@@ -280,5 +280,5 @@ For more results across SFPBench tasks and datasets, please read the paper.
 
 ## 📄 License
 This repository is released under the Creative Commons
-Attribution-NonCommercial-NoDerivatives 4.0 International
-(`CC BY-NC-ND 4.0`) license. See the [LICENSE](LICENSE) file for details.
+Attribution-NonCommercial-ShareAlike 4.0 International
+(`CC BY-NC-SA 4.0`) license. See the [LICENSE](LICENSE) file for details.
