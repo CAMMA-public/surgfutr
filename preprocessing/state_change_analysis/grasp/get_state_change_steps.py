@@ -13,7 +13,7 @@ from misc import check_overlap, find_stable_transitions, get_label_onehot_steps
 # train, val, test - rdv split
 train_video_list = ['CASE001', 'CASE002', 'CASE003', 'CASE004', 'CASE014', 'CASE015', 'CASE021']
 val_video_list = ['CASE007']
-test_video_list = ['CASE041', 'CASE047', 'CASE050', 'CASE051', 'CASE052', 'CASE053']
+test_video_list = ['CASE041', 'CASE047', 'CASE050', 'CASE051', 'CASE053']
 
 def get_continuity_timestamps(verb_onehot, all_transitions, label_value=1, k=3, window_size=20):
     all_continuity_timestamps = {}

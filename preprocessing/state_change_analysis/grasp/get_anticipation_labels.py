@@ -12,7 +12,7 @@ from collections import Counter
 
 train_video_list = ['CASE001', 'CASE002', 'CASE003', 'CASE004', 'CASE014', 'CASE015', 'CASE021']
 val_video_list = ['CASE007']
-test_video_list = ['CASE041', 'CASE047', 'CASE050', 'CASE051', 'CASE052', 'CASE053']
+test_video_list = ['CASE041', 'CASE047', 'CASE050', 'CASE051', 'CASE053']
 
 video_mode_dict = {
     'train': train_video_list,
